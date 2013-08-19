@@ -84,8 +84,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #
     config.vm.provision :chef_solo do |chef|
       chef.add_recipe "apt"
+      chef.add_recipe "ruby_build"
+      chef.add_recipe "chef-rvm"
       chef.add_recipe "build-essential"
       chef.add_recipe "apache2"
+      chef.add_recipe "passenger_apache2"
       chef.add_recipe "postgresql"
     end
 
@@ -111,4 +114,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # chef-validator, unless you changed the configuration.
   #
   #   chef.validation_client_name = "ORGNAME-validator"
+
+  config.berkshelf.enabled = true
+
+  config.vm.provision :shell,
+    :inline => "/bin/bash --login -c \"rvm use 2.0.0-p247 --default\""
+
 end
